@@ -39,13 +39,14 @@
 .main form {
   display: flex;
   flex-direction: column;
-  width: 320px;
+  width: 640px;
 }
-.main input[type="text"] {
+.main input[type="textarea"] {
   padding: 12px 16px;
   border: 1px solid #10a37f;
   border-radius: 4px;
   margin-bottom: 24px;
+  height: auto;
   outline-color: #10a37f;
 }
 .main ::placeholder {
@@ -64,4 +65,13 @@
 .main .result {
   font-weight: bold;
   margin-top: 40px;
+  width: 640px;
+}
+.main .mytable {
+  width: 840px;
+  height: 320px;
+}
+.main .cell {
+  width: 33%;
+  border: 1px solid black;
 }
