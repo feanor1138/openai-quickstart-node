@@ -68,10 +68,22 @@
   width: 640px;
 }
 .main .mytable {
+  display: table;         
   width: 840px;
   height: 320px;
+  border: 1px solid #666666;         
+  border-spacing: 5px; /* cellspacing:poor IE support for  this */
 }
-.main .cell {
-  width: 33%;
+.main .mytable .myrow {
+  display: table-row;
+  width: 100%;
+  clear: both;
+}
+.main .mytable .myrow .cell {
+  float: left; /* fix for  buggy browsers */
+  display: table-column;
+  width: 31%;
+  height: 96%;
   border: 1px solid black;
+  padding: 5px 5px 5px 5px;
 }

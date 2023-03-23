@@ -1,22 +1,22 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 
 let dbPointer = 142;
 
 export default function Home() {
-  const [unfilteredInput, setUnfilteredInput] = useState("");
-  const [sessionId, setSessionId] = useState("");
-  const [filterResult, setFilterResult] = useState();
-  const [dbResult, setDbResult] = useState();
+  //const [unfilteredInput, setUnfilteredInput] = useState("");
+  //const [sessionId, setSessionId] = useState("");
+  //const [filterResult, setFilterResult] = useState();
+  //const [dbResult, setDbResult] = useState();
   const [dataInput, setDataInput] = useState("");
-  const [result, setResult] = useState();
+  //const [result, setResult] = useState();
   const [result1, setResult1] = useState(' ');
   const [result2, setResult2] = useState(' ');
   const [result3, setResult3] = useState(' ');
-  const [saveResult, setSaveResult] = useState();
-  const [chatModel, setChatModel] = useState("text-davinci-003");
-  
+  //const [saveResult, setSaveResult] = useState();
+  const [chatModel, setChatModel] = useState('text-davinci-003');
+
   async function onSubmit(event) {
     event.preventDefault();
     try {
@@ -53,7 +53,44 @@ export default function Home() {
     }
   }
 
-  async function submitJson(event) {
+  return (
+    <div>
+      <Head>
+        <title>XA Chat Summarizer</title>
+        <link rel="icon" href="/xa.png" />
+      </Head>
+
+      <main className={styles.main}>
+        <img src="/xa.png" className={styles.icon} />
+        <h3>Summarize a chat</h3>
+        <form onSubmit={onSubmit}>
+          <select 
+            id="selectModel" 
+            onChange={(e) => setChatModel(e.target.value)}
+          >
+            <option value="text-davinci-003">text-davinci-003</option>
+          </select>
+          <textarea
+            type="text"
+            name="chat"
+            placeholder="Enter text of chat"
+            value={dataInput}
+            onChange={(e) => setDataInput(e.target.value)}
+            rows="10"
+          ></textarea>
+          <input type="submit" value="Generate summary" />
+        </form>
+        <div className={styles.mytable}>
+          <div className={styles.myrow}>
+            <div className={styles.cell}>{result1}</div>
+            <div className={styles.cell}>{result2}</div>
+            <div className={styles.cell}>{result3}</div>
+          </div>
+        </div>
+      </main>
+    </div>);
+
+  /*async function submitJson(event) {
     event.preventDefault();
     try {
       const response = await fetch("/api/filterText", {
@@ -158,41 +195,7 @@ export default function Home() {
       console.error(error);
       alert(error.message);
     }
-  }
-
-  return (
-    <div>
-      <Head>
-        <title>XA Chat Summarizer</title>
-        <link rel="icon" href="/xa.png" />
-      </Head>
-
-      <main className={styles.main}>
-        <img src="/xa.png" className={styles.icon} />
-        <h3>Summarize a chat</h3>
-        <form>
-          <label for="chatModel">Select model:</label>
-          <select id="chatModel" onChange={(e) => setChatModel(e.target.value)}>
-            <option>text-davinci-003</option>
-          </select>
-          <textarea
-            type="text"
-            name="chat"
-            placeholder="Enter text of chat"
-            value={dataInput}
-            onChange={(e) => setDataInput(e.target.value)}
-            rows="10"
-          ></textarea>
-          <input type="submit" value="Generate summary" onClick={onSubmit} />
-        </form>
-        <table className={styles.mytable}><tr>
-          <td className={styles.cell}>{result1}</td>
-          <td className={styles.cell}>{result2}</td>
-          <td className={styles.cell}>{result3}</td>
-          </tr></table>
-      </main>
-    </div>
-  );
+  }*/
 
   /*return (
     <div>
