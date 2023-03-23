@@ -30,14 +30,28 @@ export default async function (req, res) {
   }
 
   try {
-    // fine-tuned model
-    const completion = await openai.createCompletion({
-      max_tokens: 100,
-      model: model,
-      prompt: generatePrompt(chat),
-      temperature: 0.0,
-    });
-    res.status(200).json({ result: completion.data.choices[0].text });
+    
+    let propsObject = {
+        max_tokens: 100,
+        model: model,
+        temperature: 0.0
+    }
+
+    if (model === 'text-davinci-003') {
+      const completion = await openai.createCompletion({...propsObject, 
+        prompt: generatePrompt(chat, model)
+      });
+      res.status(200).json({ result: completion.data.choices[0].text });
+    } else {
+      const completion = await openai.createChatCompletion({...propsObject, 
+        messages:[
+          {"role": "system", "content": "summarize customer chat in less than 70 words"},
+          {'role': 'user', 'content': chat}
+        ]
+      });
+      console.log(completion);
+      res.status(200).json({ result: completion.data.choices[0].message.content });
+    }
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -55,11 +69,12 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(chat) {
+function generatePrompt(chat, model) {
   /*const capitalizedAnimal =
     animal[0].toUpperCase() + animal.slice(1).toLowerCase();*/
   //return `Summarize this chat succinctly: Chat: {${chat}}\n\n###\n\n`;
   //return `summarize this chat and add a title: ${chat}`;
+  if (model === 'text-davinci-003') {
   return `Summarize this chat.
 Chat:
 Customer: Why did my bill go up this year
@@ -76,6 +91,9 @@ Summary: The customer got the information they needed and is thankful for the as
   Chat:
   ${chat}
   Summary:`;
+  }
+  return `summarize customer chat in less than 70 words.
+  ${chat}`;
   /*return `Summarize this chat.
 
   Chat: {Amanda: I baked cookies. Do you want some? Jerry: Sure! Amanda: I'll bring you tomorrow :-)}

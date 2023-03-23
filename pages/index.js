@@ -14,8 +14,10 @@ export default function Home() {
   const [result1, setResult1] = useState(' ');
   const [result2, setResult2] = useState(' ');
   const [result3, setResult3] = useState(' ');
+  const [results, setResults] = useState({});
   //const [saveResult, setSaveResult] = useState();
   const [chatModel, setChatModel] = useState('text-davinci-003');
+  const models = ['text-davinci-003', 'gpt-3.5-turbo'];
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -33,7 +35,10 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (result3 !== ' ') {
+      setResults({...results, [chatModel]: data.result});
+      console.log(results);
+
+      /*if (result3 !== ' ') {
         setResult3(' ');
         setResult2(' ');
         setResult1(data.result);
@@ -43,7 +48,7 @@ export default function Home() {
         setResult2(data.result);
       } else {
         setResult1(data.result);
-      }
+      }*/
       //setResult(data.result);
       //setDataInput("");
     } catch(error) {
@@ -51,6 +56,30 @@ export default function Home() {
       console.error(error);
       alert(error.message);
     }
+  }
+
+  function getOptions() {
+    let options = [];
+    for (let model of models) {
+      options.push(getOption(model));
+    }
+    return options;
+  }
+
+  function getOption(model) {
+    return (<option value={model}>{model}</option>);
+  }
+
+  function getRows() {
+    let rows = [];
+    for (let model of models) {
+      rows.push(getRow(model));
+    }
+    return rows;
+  }
+
+  function getRow(model) {
+    return (<div className={styles.myrow}><div className={styles.titlecell}>{model}</div><div className={styles.resultcell}>{results[model]}</div></div>);
   }
 
   return (
@@ -68,7 +97,7 @@ export default function Home() {
             id="selectModel" 
             onChange={(e) => setChatModel(e.target.value)}
           >
-            <option value="text-davinci-003">text-davinci-003</option>
+              {getOptions()}
           </select>
           <textarea
             type="text"
@@ -81,14 +110,11 @@ export default function Home() {
           <input type="submit" value="Generate summary" />
         </form>
         <div className={styles.mytable}>
-          <div className={styles.myrow}>
-            <div className={styles.cell}>{result1}</div>
-            <div className={styles.cell}>{result2}</div>
-            <div className={styles.cell}>{result3}</div>
-          </div>
+          {getRows()}
         </div>
       </main>
-    </div>);
+    </div>
+    );
 
   /*async function submitJson(event) {
     event.preventDefault();

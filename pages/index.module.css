@@ -70,20 +70,32 @@
 .main .mytable {
   display: table;         
   width: 840px;
-  height: 320px;
+  height: auto;
   border: 1px solid #666666;         
   border-spacing: 5px; /* cellspacing:poor IE support for  this */
+  margin: 5px 5px 5px 5px;
 }
 .main .mytable .myrow {
   display: table-row;
   width: 100%;
+  height: auto;
   clear: both;
+  border: 1px solid black;
+  padding: 5px 5px 5px 5px;
 }
-.main .mytable .myrow .cell {
+.main .mytable .myrow .titlecell {
   float: left; /* fix for  buggy browsers */
-  display: table-column;
-  width: 31%;
-  height: 96%;
+  display: table-cell;
+  width: 18%;
+  height: 250px;
+  border: 1px solid black;
+  padding: 5px 5px 5px 5px;
+}
+.main .mytable .myrow .resultcell {
+  float: left; /* fix for  buggy browsers */
+  display: table-cell;
+  width: 79%;
+  height: 250px;
   border: 1px solid black;
   padding: 5px 5px 5px 5px;
 }
