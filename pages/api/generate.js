@@ -42,7 +42,7 @@ export default async function (req, res) {
         prompt: generatePrompt(chat, model)
       });
       res.status(200).json({ result: completion.data.choices[0].text });
-    } else {
+    } else if (model === 'gpt-3.5-turbo') {
       const completion = await openai.createChatCompletion({...propsObject, 
         messages:[
           {"role": "system", "content": "summarize customer chat in less than 70 words"},
@@ -51,6 +51,22 @@ export default async function (req, res) {
       });
       console.log(completion);
       res.status(200).json({ result: completion.data.choices[0].message.content });
+    } else if (model === 'flan_t5_large') {
+      const response = await fetch('http://18.220.13.107:8080/invocations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          summarize: [{
+            requestId:"request-id-1",
+            text:chat
+          }]
+        })
+      });
+      const output = await response.json();
+      console.log(output);
+      res.status(200).json({ result: output.summaries[0].summary_text })
     }
   } catch(error) {
     // Consider adjusting the error handling logic for your use case

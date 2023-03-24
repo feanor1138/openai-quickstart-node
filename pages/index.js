@@ -16,8 +16,12 @@ export default function Home() {
   const [result3, setResult3] = useState(' ');
   const [results, setResults] = useState({});
   //const [saveResult, setSaveResult] = useState();
-  const [chatModel, setChatModel] = useState('text-davinci-003');
-  const models = ['text-davinci-003', 'gpt-3.5-turbo'];
+  const [chatModel, setChatModel] = useState('gpt-3.5-turbo');
+  const models = [
+    {displayName:'ChatGPT 3.5', modelName: 'gpt-3.5-turbo'}, 
+    {displayName:'ChatGPT 3', modelName: 'text-davinci-003'}, 
+    {displayName:'Custom Model', modelName: 'flan_t5_large'}
+  ];
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -67,7 +71,7 @@ export default function Home() {
   }
 
   function getOption(model) {
-    return (<option value={model}>{model}</option>);
+    return (<option value={model.modelName}>{model.displayName}</option>);
   }
 
   function getRows() {
@@ -79,7 +83,7 @@ export default function Home() {
   }
 
   function getRow(model) {
-    return (<div className={styles.myrow}><div className={styles.titlecell}>{model}</div><div className={styles.resultcell}>{results[model]}</div></div>);
+    return (<div className={styles.myrow}><div className={styles.titlecell}>{model.displayName}</div><div className={styles.resultcell}>{results[model.modelName]}</div></div>);
   }
 
   return (
